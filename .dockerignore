@@ -1,0 +1,32 @@
+# Build output is generated inside the image.
+/public/
+/resources/
+.hugo_build.lock
+**/hugo_stats.json
+**/jsconfig.json
+
+# Local or private files.
+**/*.xlsx
+**/~$*.xlsx
+**/node_modules/
+.env
+.env.*
+
+# Repository and editor metadata.
+.git/
+.github/
+.githooks/
+.vscode/
+.idea/
+**/.DS_Store
+**/._*
+**/Thumbs.db
+
+# Files not needed by Hugo during the image build.
+/README.md
+/LICENSE
+/compose.yaml
+/compose.override.yaml
+/compose.override.yml
+/Dockerfile
+/.dockerignore

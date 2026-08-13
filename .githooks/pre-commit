@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+#
+# Hook pre-commit de themindcamp-gaiden. Protege de errores comunes:
+#   1. Claves privadas y ficheros .env.
+#   2. Salida de build (public/, resources/), que Hugo genera en CI.
+#   3. Lo que detecte gitleaks en el contenido staged, si está instalado.
+#
+# Instalar una vez:  git config core.hooksPath .githooks
+set -euo pipefail
+
+fail=0
+note() { printf '  \033[31mBLOCK\033[0m %s\n' "$*" >&2; fail=1; }
+
+# En el primer commit no existe HEAD todavía: comparar contra el árbol vacío.
+if git rev-parse --verify -q HEAD >/dev/null; then
+  against=HEAD
+else
+  against=$(git hash-object -t tree /dev/null)
+fi
+
+mapfile -t staged < <(git diff --cached --name-only --diff-filter=ACM "$against")
+
+for f in "${staged[@]}"; do
+  case "$f" in
+    *.env.example) ;;                       # plantillas: siempre válidas
+    *.env|.env)
+      note "$f — no metas ficheros .env en este repositorio." ;;
+  esac
+  case "$f" in
+    *keys.txt|*.agekey|*.pem|*.key|*id_rsa|*id_ed25519|*.p12|*.pfx)
+      note "$f parece una clave privada — nunca lo commitees." ;;
+  esac
+  case "$f" in
+    public/*|resources/*)
+      note "$f es salida de build (la genera Hugo en CI). Está en .gitignore: no lo fuerces con git add -f." ;;
+  esac
+done
+
+if [ "$fail" -ne 0 ]; then
+  echo >&2
+  echo "  Commit rechazado. Corrige lo de arriba." >&2
+  echo "  (Para un falso positivo real: git commit --no-verify)" >&2
+  exit 1
+fi
+
+# Paridad con el gitleaks de CI. Best-effort: solo si está instalado.
+if command -v gitleaks >/dev/null 2>&1; then
+  gl="$(mktemp)"
+  if [ "$against" = HEAD ]; then
+    scan=(gitleaks git --staged)
+  else
+    # Primer commit: no hay historia que escanear, se revisa el árbol de trabajo.
+    scan=(gitleaks dir .)
+  fi
+  if ! "${scan[@]}" --no-banner --redact -c .gitleaks.toml >"$gl" 2>&1; then
+    printf '  \033[31mBLOCK\033[0m gitleaks ha encontrado algo en el contenido staged:\n' >&2
+    grep -E 'Finding:|RuleID:|File:|Line:' "$gl" | sed 's/^/      /' >&2
+    echo >&2
+    echo "  Arréglalo, o añade el falso positivo al allowlist de .gitleaks.toml." >&2
+    echo "  (Para saltarlo: git commit --no-verify)" >&2
+    rm -f "$gl"
+    exit 1
+  fi
+  rm -f "$gl"
+fi
+exit 0

@@ -1,0 +1,38 @@
+# Salida de Hugo
+/public/
+/resources/
+.hugo_build.lock
+hugo_stats.json
+
+# Lo genera `hugo server` para el intellisense de JS del editor, no es fuente.
+/assets/jsconfig.json
+
+# Dependencias (si algún día entran módulos de Hugo o npm)
+/node_modules/
+
+# Las hojas de cálculo de gestión son locales y nunca se versionan.
+*.xlsx
+# Ficheros de bloqueo de Excel (se crean al abrir una hoja de cálculo)
+~$*.xlsx
+
+# Variables de entorno locales
+.env
+.env.*
+!.env.example
+
+# Ajustes locales opcionales de Docker Compose
+compose.override.yaml
+compose.override.yml
+
+# Sistema
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*~

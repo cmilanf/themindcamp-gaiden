@@ -1,0 +1,9 @@
+{{- $url := .Destination -}}
+{{- $alt := .Text | plainify -}}
+{{- $title := .Title -}}
+<figure class="imgframe">
+  <a href="{{ $url }}" target="_blank" rel="noopener">
+    <img src="{{ $url }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+  </a>
+  <figcaption><b>{{ strings.TrimPrefix "/" $url }}</b>{{ with $title }} — {{ . }}{{ else }}{{ with $alt }} — {{ . }}{{ end }}{{ end }}</figcaption>
+</figure>

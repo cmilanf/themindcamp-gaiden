@@ -1,0 +1,82 @@
+name: Deploy static site
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - '.vscode/**'
+      - '**.xlsx'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Calculate site version
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha="${GITHUB_SHA::7}"
+          version="$(sed -n "s/^  version *= *'\([^']*\)'.*/\1/p" hugo.toml | head -1)"
+          test -n "$version" || { echo '::error::No se pudo leer params.version de hugo.toml'; exit 1; }
+          echo "site_version=${version}+${sha}" >> "$GITHUB_OUTPUT"
+
+      - name: Install Hugo
+        uses: peaceiris/actions-hugo@6b1ee2dcc06c9b6629a5317fa0146473914d05e1 # v3
+        with:
+          hugo-version: '0.164.0'
+          extended: true
+
+      - name: Build site
+        env:
+          HUGO_PARAMS_VERSION: ${{ steps.meta.outputs.site_version }}
+        run: hugo --destination public
+
+      - name: Verify build output
+        run: test -s public/index.html
+
+      - name: Validate SCP configuration
+        env:
+          SCP_KEY: ${{ secrets.SCP_KEY }}
+          SCP_PASSWORD: ${{ secrets.SCP_PASSWORD }}
+          SCP_PATH: ${{ secrets.SCP_PATH }}
+        run: |
+          if [ -z "$SCP_KEY" ] && [ -z "$SCP_PASSWORD" ]; then
+            echo '::error::Configure SCP_KEY or SCP_PASSWORD'
+            exit 1
+          fi
+          case "$SCP_PATH" in
+            ''|'/'|'.'|'./'|'~'|'~/')
+              echo '::error::SCP_PATH must be a dedicated, non-root directory'
+              exit 1
+              ;;
+          esac
+
+      - name: Upload site over SCP
+        uses: appleboy/scp-action@ff85246acaad7bdce478db94a363cd2bf7c90345 # v1
+        with:
+          host: ${{ secrets.SCP_HOST }}
+          port: ${{ secrets.SCP_PORT || '22' }}
+          username: ${{ secrets.SCP_USER }}
+          fingerprint: ${{ secrets.SCP_FINGERPRINT }}
+          key: ${{ secrets.SCP_KEY }}
+          password: ${{ secrets.SCP_KEY == '' && secrets.SCP_PASSWORD || '' }}
+          source: "public/*"
+          target: ${{ secrets.SCP_PATH }}
+          strip_components: 1
+          overwrite: true
+          rm: true

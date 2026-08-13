@@ -1,0 +1,123 @@
+{{- /*
+  Construye el payload JSON que consume la consola.
+  Todo el contenido nace de los markdown de content/ y de data/.
+*/ -}}
+{{- $p := site.Params -}}
+{{- $build := now.Format "2006-01-02 15:04" -}}
+
+{{- /* ---- Secciones (= binarios del home) ---------------------------- */ -}}
+{{- $sections := slice -}}
+{{- range (site.GetPage "/sections").Pages -}}
+  {{- $fm := printf "---\ntitle: \"%s\"\nsummary: \"%s\"\nweight: %d\n---\n" .Title (.Params.summary | default "") (int .Weight) -}}
+  {{- $sections = $sections | append (dict
+      "slug" .File.ContentBaseName
+      "title" .Title
+      "summary" (.Params.summary | default "")
+      "generator" (.Params.generator | default "")
+      "weight" (int .Weight)
+      "html" (printf "%s" .Content)
+      "raw" (printf "%s%s" $fm .RawContent)
+      "size" (add (len $fm) (len .RawContent))
+      "mtime" (.Lastmod.Format "Jan 02 15:04")
+  ) -}}
+{{- end -}}
+
+{{- /* ---- Ponentes ---------------------------------------------------- */ -}}
+{{- $speakers := slice -}}
+{{- range (site.GetPage "/ponentes").Pages -}}
+  {{- $fm := printf "---\ntitle: \"%s\"\nrole: \"%s\"\ncompany: \"%s\"\nphoto: \"%s\"\ntwitter: \"%s\"\nweb: \"%s\"\n---\n"
+      .Title (.Params.role | default "") (.Params.company | default "")
+      (.Params.photo | default "") (.Params.twitter | default "") (.Params.web | default "") -}}
+  {{- $speakers = $speakers | append (dict
+      "slug" .File.ContentBaseName
+      "title" .Title
+      "role" (.Params.role | default "")
+      "company" (.Params.company | default "")
+      "photo" (.Params.photo | default "")
+      "twitter" (.Params.twitter | default "")
+      "web" (.Params.web | default "")
+      "html" (printf "%s" .Content)
+      "raw" (printf "%s%s" $fm .RawContent)
+      "size" (add (len $fm) (len .RawContent))
+      "mtime" (.Lastmod.Format "Jan 02 15:04")
+  ) -}}
+{{- end -}}
+
+{{- /* ---- Agenda ------------------------------------------------------ */ -}}
+{{- $agenda := slice -}}
+{{- range $p.days -}}
+  {{- $day := .n -}}
+  {{- range where (where (site.GetPage "/agenda").Pages "Params.day" $day) "Kind" "page" -}}
+    {{- $spk := .Params.speakers | default slice -}}
+    {{- $fm := printf "---\ntitle: \"%s\"\nday: %d\ntime: \"%s\"\ntipo: \"%s\"\nspeakers: [%s]\nweight: %d\n---\n"
+        .Title (int .Params.day) (.Params.time | default "") (.Params.tipo | default "")
+        (delimit (apply $spk "printf" "\"%s\"" ".") ", ") (int .Weight) -}}
+    {{- $agenda = $agenda | append (dict
+        "slug" .File.ContentBaseName
+        "title" .Title
+        "day" (int .Params.day)
+        "time" (.Params.time | default "")
+        "kind" (.Params.tipo | default "")
+        "image" (.Params.image | default "")
+        "imageCaption" (.Params.imageCaption | default "")
+        "speakers" $spk
+        "html" (printf "%s" .Content)
+        "raw" (printf "%s%s" $fm .RawContent)
+        "size" (add (len $fm) (len .RawContent))
+        "mtime" (.Lastmod.Format "Jan 02 15:04")
+    ) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* ---- Imágenes y documentos -------------------------------------- */ -}}
+{{- $images := slice -}}
+{{- range resources.Match "res/**.{jpg,jpeg,png,svg,gif,webp}" -}}
+  {{- $images = $images | append (dict "url" .RelPermalink "size" (len .Content)) -}}
+{{- end -}}
+{{- $docs := slice -}}
+{{- range resources.Match "docs/*" -}}
+  {{- $docs = $docs | append (dict "name" (path.Base .RelPermalink) "url" .RelPermalink "size" (len .Content)) -}}
+{{- end -}}
+
+{{- /* ---- Payload ---------------------------------------------------- */ -}}
+{{- $data := dict
+  "site" (dict
+    "title" site.Title
+    "edition" $p.edition
+    "editionName" $p.editionName
+    "editionKanji" $p.editionKanji
+    "tagline" $p.tagline
+    "description" $p.description
+    "startDate" $p.startDate
+    "endDate" $p.endDate
+    "datesHuman" $p.datesHuman
+    "venue" $p.venue
+    "city" $p.city
+    "venueURL" $p.venueURL
+    "address" $p.address
+    "mapURL" $p.mapURL
+    "price" $p.price
+    "twitter" $p.twitter
+    "youtube" $p.youtube
+    "mail" $p.mail
+    "hostname" $p.hostname
+    "user" $p.user
+    "version" $p.version
+    "kernel" (printf "mcg %s" $p.version)
+    "shell" (printf "mcsh %s" $p.version)
+    "arch" $p.arch
+    "distro" $p.distro
+    "defaultTheme" $p.defaultTheme
+    "defaultTTY" ($p.defaultTTY | default "web")
+    "generator" (printf "Hugo %s" hugo.Version)
+    "buildDate" $build
+    "stamp" (now.Format "Jan 02 15:04")
+    "days" $p.days
+  )
+  "sections" $sections
+  "speakers" $speakers
+  "agenda" $agenda
+  "images" $images
+  "docs" $docs
+-}}
+{{- $data | jsonify -}}

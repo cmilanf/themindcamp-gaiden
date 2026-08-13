@@ -1,0 +1,92 @@
+baseURL = 'https://themindcamp.net/'
+locale = 'es-ES'
+defaultContentLanguage = 'es'
+title = 'The MindCamp Gaiden'
+enableRobotsTXT = true
+disableKinds = ['taxonomy', 'term', 'rss', 'sitemap']
+
+# Las páginas de contenido no se publican como HTML: son "ficheros" que consume
+# la consola. Se siguen listando para poder construir el payload JSON.
+[[cascade]]
+  [cascade.build]
+    render = 'never'
+    list = 'always'
+  [cascade.target]
+    path = '{/sections/**,/ponentes/**,/agenda/**}'
+
+# Sin fechas en el front matter usamos la del fichero: así `ls -l` muestra
+# la fecha real de la última edición del markdown.
+[frontmatter]
+  date = ['date', ':fileModTime']
+  lastmod = ['lastmod', ':fileModTime']
+
+[markup.goldmark.renderer]
+  unsafe = true
+[markup.goldmark.parser]
+  wrapStandAloneImageWithinParagraph = false
+[markup.goldmark.extensions.typographer]
+  # En una consola queremos comillas y guiones literales, no tipográficos.
+  disable = true
+[markup.goldmark.parser.attribute]
+  block = true
+  title = true
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 3
+[markup.highlight]
+  # Sin estilos en línea: el bloque de código hereda la paleta de la consola.
+  noClasses = false
+  guessSyntax = false
+
+[params]
+  # ---- Identidad del evento -------------------------------------------------
+  edition = 'Gaiden'
+  editionName = 'gaiden'
+  editionKanji = '外伝'
+  tagline = 'La desconferencia tecnológica autogestionada'
+  description = 'The MindCamp Gaiden - Desconferencia tecnológica - Cañamares, Cuenca - Fechas por confirmar'
+
+  # ---- Fechas y lugar -------------------------------------------------------
+  # TODO: fechas sin cerrar. En cuanto se confirmen, rellena startDate/endDate en
+  # ISO 8601 y datesHuman con el rango legible: la cuenta atrás (`countdown`,
+  # `uptime`, el logo) se reactiva sola en cuanto startDate sea una fecha válida.
+  startDate = ''
+  endDate = ''
+  datesHuman = 'Fechas por confirmar'
+  # TODO: nombre, web y dirección exacta de la casa rural, pendientes de confirmar.
+  venue = 'Casa rural en Cañamares'
+  city = 'Cañamares (Cuenca)'
+  venueURL = ''
+  address = '16890 Cañamares, Cuenca'
+  mapURL = 'https://www.google.es/maps/place/Ca%C3%B1amares,+Cuenca/@40.4531,-2.2394,14z'
+  price = 'TBD'
+
+  # ---- Enlaces --------------------------------------------------------------
+  twitter = 'TBD'
+  youtube = 'https://www.youtube.com/playlist?list=PLnJ8jujJSEaGAqshIUMEqr2wNWTam8BTF'
+  mail = 'TBD'
+
+  # ---- Cosmética de la consola ---------------------------------------------
+  hostname = 'mindcamp'
+  user = 'visitante'
+  version = '1.0'          # versión del sitio: se muestra como kernel y shell
+  arch = 'x86_64-barcamp'
+  distro = 'MindCampOS Gaiden'
+  defaultTheme = 'tty'
+  defaultTTY = 'web'       # 'web' respeta el scroll del documento, 'term' persigue el final
+
+  # Días de la agenda (agrupación de las sesiones por `day` en el front matter)
+  # TODO: sin fechas confirmadas usamos solo el día de la semana. Añade el número
+  # y el mes ('Viernes 23 de octubre') cuando se cierre el fin de semana.
+  [[params.days]]
+    n = 1
+    label = 'Viernes (noche)'
+  [[params.days]]
+    n = 2
+    label = 'Sábado'
+  [[params.days]]
+    n = 3
+    label = 'Domingo'
+
+[outputs]
+  home = ['html']
