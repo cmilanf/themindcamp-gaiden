@@ -5,6 +5,7 @@ import { Terminal } from "./terminal.js";
 import { buildFS, lookup } from "./vfs.js";
 import { registerCommands } from "./commands.js";
 import { initAirline } from "./airline.js";
+import { initAgendaFlash } from "./agenda-flash.js";
 import { boot } from "./boot.js";
 
 function readPayload() {
@@ -28,6 +29,7 @@ async function start() {
 
   registerCommands(term);
   initAirline(term);
+  initAgendaFlash(term);
 
   window.mcg = term; // por si alguien abre la consola del navegador (guiño)
 

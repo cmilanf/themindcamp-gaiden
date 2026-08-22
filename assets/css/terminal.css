@@ -231,6 +231,146 @@ body { overflow: hidden; }
 #al-drop.open { display: block; }
 #al-drop .al-item { display: block; width: 100%; text-align: left; }
 
+/* ---- Consulta rápida de agenda ------------------------------------------ */
+.al-flash-toggle {
+  color: var(--c11);
+  border-left: 1px solid var(--sel);
+  font-weight: 700;
+}
+
+.agenda-flash-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(0, 0, 0, 0.42);
+}
+.agenda-flash-backdrop[hidden] { display: none; }
+
+.agenda-flash {
+  position: absolute;
+  top: 2.2rem;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(430px, calc(100vw - 2rem));
+  color: var(--fg);
+  background: var(--bg);
+  border-left: 1px solid var(--c10);
+  box-shadow: -12px 0 32px rgba(0, 0, 0, 0.55);
+  outline: none;
+}
+
+.agenda-flash-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem 0.85rem;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--sel);
+}
+.agenda-flash-kicker { color: var(--c10); font-size: 0.78rem; }
+.agenda-flash-head h2 {
+  margin: 0.15rem 0 0;
+  color: var(--c11);
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+}
+.agenda-flash-close {
+  border: 1px solid var(--dim);
+  padding: 0.22rem 0.45rem;
+  color: var(--fg);
+  background: transparent;
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.agenda-flash-close:hover,
+.agenda-flash-close:focus-visible {
+  color: var(--c0);
+  background: var(--c11);
+  border-color: var(--c11);
+  outline: none;
+}
+
+.agenda-flash-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  flex: 0 0 auto;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--sel);
+}
+.agenda-flash-tabs button {
+  border: 0;
+  border-right: 1px solid var(--sel);
+  padding: 0.72rem 0.5rem;
+  color: var(--dim);
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.agenda-flash-tabs button:last-child { border-right: 0; }
+.agenda-flash-tabs button:hover,
+.agenda-flash-tabs button:focus-visible { color: var(--c11); outline: none; }
+.agenda-flash-tabs button[aria-selected="true"] {
+  color: var(--c0);
+  background: var(--c10);
+}
+
+.agenda-flash-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--sel) var(--bg);
+  padding: 0.35rem 1rem 1rem;
+}
+.agenda-flash-event {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px dashed var(--sel);
+}
+.agenda-flash-time { color: var(--c10); font-weight: 700; }
+.agenda-flash-detail h3 {
+  margin: 0 0 0.38rem;
+  color: var(--fg);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+.agenda-flash-kind {
+  display: inline-block;
+  border: 1px solid currentColor;
+  padding: 0.06rem 0.4rem;
+  color: var(--c14);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+.agenda-flash-kind-keynote { color: var(--c13); }
+.agenda-flash-kind-charla { color: var(--c11); }
+.agenda-flash-kind-descanso { color: var(--c9); }
+.agenda-flash-kind-ocio { color: var(--c14); }
+.agenda-flash-kind-registro { color: var(--c12); }
+.agenda-flash-kind-visita { color: var(--c10); }
+.agenda-flash-kind-cierre { color: var(--c1); }
+.agenda-flash-empty { color: var(--dim); }
+
+.agenda-flash-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  color: var(--dim);
+  background: var(--bg-alt);
+  border-top: 1px solid var(--sel);
+  font-size: 0.78rem;
+}
+.agenda-flash-foot a { color: var(--c11); }
+.agenda-flash-foot code { color: var(--c14); }
+
 /* ---- Terminal ------------------------------------------------------------ */
 #terminal {
   flex: 1 1 auto;
@@ -526,4 +666,15 @@ noscript .nojs {
   .al-menu { display: none; }
   #al-toggle { display: inline-flex; }
   .avatar { width: 9ch; }
+  .al-flash-toggle { padding-inline: 0.55em; }
+  .agenda-flash-backdrop { background: var(--bg); }
+  .agenda-flash {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    border-left: 0;
+    box-shadow: none;
+  }
+  .agenda-flash-list { padding-inline: 0.8rem; }
+  .agenda-flash-foot { flex-direction: column; }
 }
