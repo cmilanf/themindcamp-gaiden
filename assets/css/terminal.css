@@ -238,6 +238,18 @@ body { overflow: hidden; }
   font-weight: 700;
 }
 
+.al-github {
+  color: var(--dim);
+  text-decoration: none;
+  border-left: 1px solid var(--sel);
+}
+.al-github:hover,
+.al-github:focus-visible {
+  color: var(--c11);
+  background: var(--sel);
+  outline: none;
+}
+
 .agenda-flash-backdrop {
   position: fixed;
   inset: 0;
@@ -660,6 +672,7 @@ noscript .nojs {
   #al-toggle { display: inline-flex; }
   .avatar { width: 9ch; }
   .al-flash-toggle { padding-inline: 0.55em; }
+  .al-github { padding-inline: 0.55em; }
   .agenda-flash-backdrop { background: var(--bg); }
   .agenda-flash {
     position: fixed;
