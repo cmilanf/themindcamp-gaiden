@@ -15,6 +15,7 @@ FROM nginx:1.30.4-alpine@sha256:97d490c12ba55b4946b01546d1c3ed324e8d41ab1c9fcb2a
 LABEL org.opencontainers.image.source="https://github.com/cmilanf/themindcamp-gaiden"
 LABEL org.opencontainers.image.description="The MindCamp Gaiden — web-consola"
 
-# Use the image's standard Nginx configuration; the site needs no backend or
-# custom endpoint.
+# The site needs no backend or custom endpoint, but does get a hardened
+# server block (security headers) in place of the image's default config.
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /project/public /usr/share/nginx/html

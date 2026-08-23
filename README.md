@@ -242,6 +242,41 @@ docker compose up -d --build   # http://localhost:8080
 docker compose down
 ```
 
-La imagen compila el sitio con Hugo y sirve los ficheros estáticos con la
-configuración estándar de Nginx. No incluye backend, endpoint de identificación
-del visitante ni configuración especial del servidor web.
+La imagen compila el sitio con Hugo y sirve los ficheros estáticos con Nginx,
+usando el `nginx.conf` de este repositorio en vez de la configuración por
+defecto de la imagen. No incluye backend ni endpoint de identificación del
+visitante; la única diferencia respecto al Nginx estándar son las cabeceras de
+seguridad descritas a continuación.
+
+## HTTP security headers
+
+El sitio es completamente estático: una sola página HTML, CSS y JS con hash
+(`fingerprint`) e integridad (SRI) en `home.html`, sin formularios, sin
+`fetch`/`XHR`, y sin contenido de terceros embebido (los enlaces a GitHub,
+Twitter y YouTube abren en pestaña nueva, nunca en un `<iframe>`). Eso permite
+una política de cabeceras estricta.
+
+`nginx.conf` la aplica para la imagen Docker opcional. **El despliegue de
+producción no pasa por esa imagen** (ver "Despliegue" más arriba): sube los
+ficheros estáticos por SCP a un alojamiento externo, así que estas cabeceras
+hay que replicarlas en la configuración del servidor web o proxy que sirva
+`themindcamp.net` de verdad.
+
+| Cabecera                     | Valor                                                                                                                                                                                                                                | Por qué |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+| `Content-Security-Policy`     | `default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests` | Todo se sirve desde `'self'`; no hace falta `unsafe-inline` en `script-src` porque el JS se carga como fichero con SRI. `style-src-attr 'unsafe-inline'` es necesario porque `assets/js/ansi.js` escribe atributos `style="color:...;background:..."` en línea para los colores ANSI de 256/RGB que quedan fuera de las 16 clases CSS de la paleta. |
+| `Strict-Transport-Security`   | `max-age=63072000; includeSubDomains`                                                                                                                                                                                                | Fuerza HTTPS en visitas futuras. Se omite `preload` a propósito: es un compromiso de todo el dominio difícil de revertir; añádelo aparte solo si tienes claro que todos los subdominios serán siempre HTTPS. |
+| `X-Content-Type-Options`      | `nosniff`                                                                                                                                                                                                                            | Evita que el navegador reinterprete el tipo MIME de un fichero servido. |
+| `X-Frame-Options`             | `DENY`                                                                                                                                                                                                                               | Nada en el sitio necesita ser embebido en un `<iframe>` de otro dominio. |
+| `Referrer-Policy`             | `strict-origin-when-cross-origin`                                                                                                                                                                                                   | No filtra la ruta completa al navegar a un dominio externo. |
+| `Permissions-Policy`          | `camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()`                                                                                                                                                  | Desactiva APIs de navegador que el sitio no usa. |
+| `Cross-Origin-Opener-Policy`  | `same-origin`                                                                                                                                                                                                                        | Aísla la ventana de `window.opener` de otros orígenes. |
+| `Cross-Origin-Resource-Policy`| `same-origin`                                                                                                                                                                                                                        | Impide que otros orígenes carguen los recursos del sitio (imágenes, CSS, JS). |
+
+Cabeceras que se evitan a propósito:
+
+- `X-XSS-Protection`: obsoleta, sustituida por CSP y puede introducir
+  problemas en navegadores antiguos; se omite en vez de fijarla a `0`.
+- `Cross-Origin-Embedder-Policy`: nada en el sitio necesita aislamiento de
+  origen cruzado (`SharedArrayBuffer`, etc.) y podría romper la carga de la
+  imagen `og-preview.png` u otros recursos si se configura mal.
