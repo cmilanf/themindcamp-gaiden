@@ -121,6 +121,7 @@ Mientras las fechas no estén confirmadas, `startDate`/`endDate` se dejan vacío
 y `datesHuman` dice «Fechas por confirmar»: la cuenta atrás (`countdown`,
 `uptime` y el bloque del logo) se desactiva sola. En cuanto se cierre el fin de
 semana basta con rellenar los tres parámetros y las etiquetas de `params.days`.
+Para esta edición ya están cerradas: 27-29 de noviembre de 2026.
 
 ## Cómo funciona la consola
 

@@ -44,15 +44,12 @@ disableKinds = ['taxonomy', 'term', 'rss', 'sitemap']
   editionName = 'gaiden'
   editionKanji = '外伝'
   tagline = 'La desconferencia tecnológica autogestionada'
-  description = 'The MindCamp Gaiden - Desconferencia tecnológica - Cañamares, Cuenca - Fechas por confirmar'
+  description = 'The MindCamp Gaiden - Desconferencia tecnológica - Cañamares, Cuenca - 27-29 de noviembre de 2026'
 
   # ---- Fechas y lugar -------------------------------------------------------
-  # TODO: fechas sin cerrar. En cuanto se confirmen, rellena startDate/endDate en
-  # ISO 8601 y datesHuman con el rango legible: la cuenta atrás (`countdown`,
-  # `uptime`, el logo) se reactiva sola en cuanto startDate sea una fecha válida.
-  startDate = ''
-  endDate = ''
-  datesHuman = 'Fechas por confirmar'
+  startDate = '2026-11-27T20:00:00+01:00'
+  endDate = '2026-11-29T17:00:00+01:00'
+  datesHuman = '27-29 de noviembre de 2026'
   # TODO: nombre, web y dirección exacta de la casa rural, pendientes de confirmar.
   venue = 'Casa rural en Cañamares'
   city = 'Cañamares (Cuenca)'
@@ -76,19 +73,17 @@ disableKinds = ['taxonomy', 'term', 'rss', 'sitemap']
   defaultTTY = 'web'       # 'web' respeta el scroll del documento, 'term' persigue el final
 
   # Días de la agenda (agrupación de las sesiones por `day` en el front matter)
-  # TODO: sin fechas confirmadas usamos solo el día de la semana. Añade el número
-  # y el mes ('Viernes 23 de octubre') cuando se cierre el fin de semana.
   [[params.days]]
     n = 1
-    label = 'Viernes (noche)'
+    label = 'Viernes 27 de noviembre (noche)'
     short = 'VIE'
   [[params.days]]
     n = 2
-    label = 'Sábado'
+    label = 'Sábado 28 de noviembre'
     short = 'SÁB'
   [[params.days]]
     n = 3
-    label = 'Domingo'
+    label = 'Domingo 29 de noviembre'
     short = 'DOM'
 
 [outputs]
