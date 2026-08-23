@@ -345,17 +345,10 @@ body { overflow: hidden; }
   display: inline-block;
   border: 1px solid currentColor;
   padding: 0.06rem 0.4rem;
-  color: var(--c14);
   font-size: 0.72rem;
   text-transform: uppercase;
 }
-.agenda-flash-kind-keynote { color: var(--c13); }
-.agenda-flash-kind-charla { color: var(--c11); }
-.agenda-flash-kind-descanso { color: var(--c9); }
-.agenda-flash-kind-ocio { color: var(--c14); }
-.agenda-flash-kind-registro { color: var(--c12); }
-.agenda-flash-kind-visita { color: var(--c10); }
-.agenda-flash-kind-cierre { color: var(--c1); }
+/* El color de cada tipo lo pone la clase .f9-.f15 (ver KINDS en content.js). */
 .agenda-flash-empty { color: var(--dim); }
 
 .agenda-flash-foot {

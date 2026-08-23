@@ -1,28 +1,8 @@
-/* Consulta rápida de la agenda. Consume el mismo payload que la terminal. */
+/* Consulta rápida de la agenda. Consume el mismo payload que la terminal y
+   reutiliza el catálogo de tipos de sesión (KINDS/kindOf) de content.js para
+   que las etiquetas y colores no se dupliquen ni se desincronicen. */
 
-const DAY_LABELS = ["VIE", "SÁB", "DOM"];
-
-const KIND_LABELS = {
-  keynote: "keynote",
-  charla: "charla",
-  descanso: "descanso",
-  ocio: "ocio",
-  registro: "registro",
-  visita: "visita",
-  cierre: "cierre",
-  comida: "descanso",
-  cafe: "descanso",
-  "café": "descanso",
-  desayuno: "descanso",
-  cena: "descanso",
-  networking: "ocio",
-  free: "ocio",
-  talk: "charla",
-};
-
-function normalizedKind(kind) {
-  return KIND_LABELS[kind] || kind || "evento";
-}
+import { kindOf } from "./content.js";
 
 /** Día que debe abrirse por defecto: viernes antes del evento y el día real
  * durante el fin de semana. Comparamos fechas de calendario para que la hora
@@ -76,9 +56,9 @@ export function initAgendaFlash(term) {
       const title = document.createElement("h3");
       title.textContent = event.title;
       const kind = document.createElement("span");
-      const kindName = normalizedKind(event.kind);
-      kind.className = `agenda-flash-kind agenda-flash-kind-${kindName}`;
-      kind.textContent = kindName;
+      const k = kindOf(event.kind);
+      kind.className = `agenda-flash-kind ${k.cls}`;
+      kind.textContent = k.label;
       detail.append(title, kind);
       row.append(time, detail);
       list.appendChild(row);
@@ -98,7 +78,7 @@ export function initAgendaFlash(term) {
     renderList();
   };
 
-  days.forEach((day, index) => {
+  days.forEach((day) => {
     const tab = document.createElement("button");
     tab.type = "button";
     tab.id = `agenda-flash-tab-${day.n}`;
@@ -106,7 +86,7 @@ export function initAgendaFlash(term) {
     tab.setAttribute("role", "tab");
     tab.setAttribute("aria-controls", "agenda-flash-list");
     tab.setAttribute("aria-label", day.label);
-    tab.textContent = DAY_LABELS[index] || day.label;
+    tab.textContent = day.short || day.label;
     tab.addEventListener("click", () => selectDay(day.n));
     tabs.appendChild(tab);
   });

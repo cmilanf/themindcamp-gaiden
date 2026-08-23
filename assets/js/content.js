@@ -28,7 +28,7 @@ const KIND_ALIASES = {
   talk: "charla",
 };
 
-function kindOf(k) {
+export function kindOf(k) {
   const key = KIND_ALIASES[k] || k;
   return KINDS[key] || { tag: "?", cls: "f7", label: k || "" };
 }

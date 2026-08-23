@@ -81,12 +81,15 @@ disableKinds = ['taxonomy', 'term', 'rss', 'sitemap']
   [[params.days]]
     n = 1
     label = 'Viernes (noche)'
+    short = 'VIE'
   [[params.days]]
     n = 2
     label = 'Sábado'
+    short = 'SÁB'
   [[params.days]]
     n = 3
     label = 'Domingo'
+    short = 'DOM'
 
 [outputs]
   home = ['html']
