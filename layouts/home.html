@@ -40,12 +40,36 @@
             title="Volver al inicio (reboot)">&#9282; main</button>
     <nav class="al-menu" id="al-menu" aria-label="Secciones del evento"></nav>
     <span class="al-right">
+      <button type="button" class="al-seg al-item al-noarrow al-flash-toggle" id="agenda-flash-toggle"
+              aria-expanded="false" aria-controls="agenda-flash">AGENDA FLASH</button>
       <button type="button" class="al-seg al-item al-noarrow" id="al-toggle"
               aria-expanded="false" aria-controls="al-drop">MENÚ &#9662;</button>
       <span class="al-seg al-enc" id="al-file" aria-hidden="true">~</span>
       <span class="al-seg al-pos" id="al-pos" aria-hidden="true">1:1</span>
     </span>
     <div id="al-drop" role="menu" aria-label="Secciones del evento"></div>
+  </div>
+
+  <div id="agenda-flash-backdrop" class="agenda-flash-backdrop" hidden>
+    <aside id="agenda-flash" class="agenda-flash" role="dialog" aria-modal="true"
+           aria-labelledby="agenda-flash-title" tabindex="-1">
+      <header class="agenda-flash-head">
+        <div>
+          <span class="agenda-flash-kicker">~/agenda</span>
+          <h2 id="agenda-flash-title">AGENDA FLASH</h2>
+        </div>
+        <button type="button" class="agenda-flash-close" id="agenda-flash-close"
+                aria-label="Cerrar Agenda Flash">ESC</button>
+      </header>
+      <div class="agenda-flash-tabs" id="agenda-flash-tabs" role="tablist"
+           aria-label="Días de la agenda"></div>
+      <div class="agenda-flash-list" id="agenda-flash-list" role="tabpanel"
+           tabindex="0"></div>
+      <footer class="agenda-flash-foot">
+        <a href="/agenda/" id="agenda-flash-full">Abrir agenda completa →</a>
+        <span>Terminal: <code>./agenda</code></span>
+      </footer>
+    </aside>
   </div>
 
   <main id="terminal" tabindex="-1">
