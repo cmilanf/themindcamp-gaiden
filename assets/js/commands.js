@@ -318,6 +318,18 @@ export function registerCommands(term) {
   });
 
   term.register({
+    name: "github",
+    group: "media",
+    aliases: ["repo", "source", "src"],
+    desc: "Abre el repositorio de este site en GitHub",
+    run: () => {
+      const url = "https://github.com/cmilanf/themindcamp-gaiden";
+      window.open(url, "_blank", "noopener");
+      term.write(`${A.gray}abriendo ${url}${A.reset}`);
+    },
+  });
+
+  term.register({
     name: "map",
     group: "media",
     aliases: ["mapa"],
