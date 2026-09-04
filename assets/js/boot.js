@@ -94,4 +94,12 @@ export function motd(term) {
       `Si prefieres los menús, usa la barra de arriba.${A.reset}`
   );
   term.write("");
+  term.writeLineHTML(
+    sp("f8", "¿El scroll no te cuadra? Por defecto la salida se queda arriba y la lees como un documento; con ") +
+      act("tty term", "f10 bo", "tty term", "La consola persigue el final de la salida") +
+      sp("f8", " la consola persigue el final, como una terminal de verdad, y ") +
+      act("tty web", "f10 bo", "tty web", "Volver al desplazamiento tipo documento") +
+      sp("f8", " la devuelve al modo documento.")
+  );
+  term.write("");
 }
