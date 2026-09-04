@@ -340,7 +340,11 @@ export function registerCommands(term) {
         "blk"
       );
       term.write(`${A.gray}${site.address}${A.reset}`);
+      if (site.venuePhone) term.write(`${A.gray}Tel. ${site.venuePhone}${A.reset}`);
       term.writeLineHTML(`<a href="${esc(site.mapURL)}" target="_blank" rel="noopener">Abrir en Google Maps ↗</a>`);
+      if (site.venueURL) {
+        term.writeLineHTML(`<a href="${esc(site.venueURL)}" target="_blank" rel="noopener">Web de ${esc(site.venue)} ↗</a>`);
+      }
     },
   });
 

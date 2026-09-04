@@ -6,7 +6,7 @@ weight: 50
 
 ## TBD
 
-El precio está aún por determinar. Nadie se queda nada: el evento es **autogestionado** y sin ánimo de lucro. El dinero va íntegro a la casa rural, la comida y la bebida. Si sobra presupuesto, se reparte y se devuelve entre todos los participantes.
+El precio está aún por determinar. Nadie se queda nada: el evento es **autogestionado** y sin ánimo de lucro. El dinero va íntegro a la hospedería, la comida y la bebida. Si sobra presupuesto, se reparte y se devuelve entre todos los participantes.
 
 ## Qué incluye el pack de registro
 
@@ -21,7 +21,7 @@ Además de **ALOJAMIENTO** + **COMIDA** + **BEBIDA**:
 
 ## Qué NO incluye
 
-- Transporte hasta la finca.
+- Transporte hasta Sigüenza.
 - Merchandising corporativo que nadie quiere.
 - Wi-Fi estable a las 04:00 cuando 12 personas están haciendo `docker pull`.
 

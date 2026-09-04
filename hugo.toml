@@ -44,18 +44,18 @@ disableKinds = ['taxonomy', 'term', 'rss', 'sitemap']
   editionName = 'gaiden'
   editionKanji = '外伝'
   tagline = 'La desconferencia tecnológica autogestionada'
-  description = 'The MindCamp Gaiden - Desconferencia tecnológica - Cañamares, Cuenca - 27-29 de noviembre de 2026'
+  description = 'The MindCamp Gaiden - Desconferencia tecnológica - Sigüenza, Guadalajara - 27-29 de noviembre de 2026'
 
   # ---- Fechas y lugar -------------------------------------------------------
   startDate = '2026-11-27T20:00:00+01:00'
   endDate = '2026-11-29T17:00:00+01:00'
   datesHuman = '27-29 de noviembre de 2026'
-  # TODO: nombre, web y dirección exacta de la casa rural, pendientes de confirmar.
-  venue = 'Casa rural en Cañamares'
-  city = 'Cañamares (Cuenca)'
-  venueURL = ''
-  address = '16890 Cañamares, Cuenca'
-  mapURL = 'https://www.google.es/maps/place/Ca%C3%B1amares,+Cuenca/@40.4531,-2.2394,14z'
+  venue = 'Hospedería Porta Coeli'
+  city = 'Sigüenza (Guadalajara)'
+  venueURL = 'https://portacoeli.es/'
+  address = 'Calle Mayor 50, 19250 Sigüenza (Guadalajara)'
+  venuePhone = '949 391 875'
+  mapURL = 'https://www.google.com/maps/search/?api=1&query=Hospeder%C3%ADa+Porta+Coeli%2C+Calle+Mayor+50%2C+19250+Sig%C3%BCenza'
   price = 'TBD'
 
   # ---- Enlaces --------------------------------------------------------------

@@ -14,7 +14,7 @@ Su objetivo es ofrecer un ambiente relajado e informal donde compartir nuestra p
 
 ## ¿Y por qué "Gaiden"?
 
-Porque esta edición es precisamente eso, un **gaiden** (外伝): una historia paralela, un spin-off. No es "la décima", es *la que se sale del canon*. La última edición de _The MindCamp_ fue en el año 2019, antes de la pandemia del COVID-19, por lo que es un evento que lleva más de 7 años sin repetirse. Mismo enfoque, mismas ganas y repetición de finca en el envidiable entorno de la Serranía de Cuenca.
+Porque esta edición es precisamente eso, un **gaiden** (外伝): una historia paralela, un spin-off. No es "la décima", es *la que se sale del canon*. La última edición de _The MindCamp_ fue en el año 2019, antes de la pandemia del COVID-19, por lo que es un evento que lleva más de 7 años sin repetirse. Mismo enfoque, mismas ganas y, esta vez, cambio de escenario: nos vamos al casco histórico de Sigüenza, en Guadalajara.
 
 ## Las reglas
 

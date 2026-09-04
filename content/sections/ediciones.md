@@ -7,10 +7,10 @@ weight: 80
 ## git log --oneline
 
 ```
-* Gaiden      2026  Cañamares (Cuenca)        27-29 nov  [HEAD -> main]
+* Gaiden      2026  Sigüenza (Guadalajara)    27-29 nov  [HEAD -> main]
 * 2019        2019  - 
 * 2018        2018  Fresnedillas de la Oliva  26-28 oct
-* 2017        2017  Cañamares (Cuencia)       27-29 oct
+* 2017        2017  Cañamares (Cuenca)        27-29 oct
 * ...         y unas cuantas más antes de que tuviéramos webs bonitas
 ```
 
